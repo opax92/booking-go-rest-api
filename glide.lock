@@ -1,0 +1,24 @@
+hash: bf9404fd6da82a75986ec580068f8bc01f6fd9f2edc4753d5f41a71bbd737e43
+updated: 2018-01-21T19:24:50.125369797Z
+imports:
+- name: github.com/codegangsta/inject
+  version: 37d7f8432a3e684eef9b2edece76bdfa6ac85b39
+- name: github.com/go-martini/martini
+  version: 49411a5b646861ad29a6ddd5351717a0a9c49b94
+- name: github.com/jinzhu/gorm
+  version: 5174cc5c242a728b435ea2be8a2f7f998e15429b
+  subpackages:
+  - dialects/sqlite
+- name: github.com/jinzhu/inflection
+  version: 1c35d901db3da928c72a72d8458480cc9ade058f
+- name: github.com/martini-contrib/cors
+  version: 553b9208d353a39b0850c02355f478ba020c86d7
+- name: github.com/martini-contrib/render
+  version: ec18f8345a1181146728238980606fb1d6f40e8c
+- name: github.com/mattn/go-sqlite3
+  version: 6c771bb9887719704b210e87e934f08be014bdb1
+- name: github.com/oxtoacart/bpool
+  version: 4e1c5567d7c2dd59fa4c7c83d34c2f3528b025d6
+- name: github.com/Sirupsen/logrus
+  version: ba1b36c82c5e05c4f912a88eab0dcd91a171688f
+testImports: []
