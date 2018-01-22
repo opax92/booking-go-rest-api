@@ -15,6 +15,5 @@ func InitDb() *gorm.DB{
 
 
 	db.AutoMigrate(&Event{}, &Booking{})
-
 	return db
 }

@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"github.com/go-martini/martini"
-	"fmt"
+	"strconv"
 )
 
 func BookEvent(request* http.Request, db *gorm.DB, render render.Render){
@@ -22,16 +22,16 @@ func BookEvent(request* http.Request, db *gorm.DB, render render.Render){
 	}
 
 	if booking.BookedBy == ""{
-		render.Text(http.StatusBadRequest, "BookedBy cannot be empty")
+		render.Text(http.StatusBadRequest, "bookedBy cannot be empty")
 		return
 	}
 
-	if findEventById(db, fmt.Sprint(booking.EventId)).Id == 0{
+	if findEventById(db, booking.EventId).Id == 0{
 		render.Text(http.StatusNotFound, "Event not found")
 		return
 	}
 
-	if findBookForEventId(db, fmt.Sprint(booking.EventId)).Id != 0{
+	if findBookForEventId(db, booking.EventId).Id != 0{
 		render.Text(http.StatusBadRequest, "Event already booked")
 		return
 	}
@@ -45,7 +45,14 @@ func BookEvent(request* http.Request, db *gorm.DB, render render.Render){
 func UnBookEvent(params martini.Params, db *gorm.DB, render render.Render){
 	var booking Booking
 
-	if findBookForEventId(db, params["id"]).Id == 0{
+	eventId, err := strconv.ParseUint(params["id"], 10, 64)
+
+	if err != nil{
+		render.Text(http.StatusBadRequest, "Bad JSON encoding")
+		return
+	}
+
+	if findBookForEventId(db, eventId).Id == 0{
 		render.Text(http.StatusNotFound, "Event is not booked!")
 		return
 	}

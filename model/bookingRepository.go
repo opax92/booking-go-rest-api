@@ -4,7 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func findBookForEventId(db* gorm.DB, eventId string) Booking{
+func findBookForEventId(db* gorm.DB, eventId uint64) Booking{
 	var booking Booking
 
 	db.Where("event_id = ?", eventId).First(&booking)

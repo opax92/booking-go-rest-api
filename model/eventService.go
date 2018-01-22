@@ -7,39 +7,22 @@ import (
 	"github.com/go-martini/martini"
 	"encoding/json"
 	"unicode/utf8"
-	"fmt"
 	"strconv"
 )
 
 func GetAllEvents(db* gorm.DB, render render.Render){
-	var allEvents = findAllEvents(db)
-	var eventView []EventView
-
-	for i := 0; i < len(allEvents);i++{
-		if v := findBookForEventId(db, fmt.Sprint(allEvents[i].Id)); v.Id != 0{
-			eventView = append(eventView,
-				EventView{Id:allEvents[i].Id,
-				EventName:allEvents[i].EventName,
-				BookedBy:v.BookedBy})
-		}else{
-			eventView = append(eventView,
-				EventView{Id:allEvents[i].Id,
-				EventName:allEvents[i].EventName,
-				BookedBy:""})
-		}
-	}
-
-	if eventView == nil{
-		render.JSON(http.StatusOK, allEvents)
-		return
-	}
-
+	var eventView = getAllEventsView(db)
 	render.JSON(http.StatusOK, eventView)
 }
 
 func DeleteEvent(params martini.Params, db* gorm.DB, render render.Render){
 	var event Event
-	var eventId = params["id"]
+	eventId, err := strconv.ParseUint(params["id"], 10, 64)
+
+	if err != nil {
+		render.Text(http.StatusBadRequest, "Bad JSON encoding")
+		return
+	}
 
 	if findEventById(db, eventId).Id == 0 {
 		render.Text(http.StatusNotFound, "Event not found")
@@ -51,13 +34,7 @@ func DeleteEvent(params martini.Params, db* gorm.DB, render render.Render){
 		return
 	}
 
-	id, err := strconv.ParseUint(params["id"], 10, 64)
-
-	if err != nil{
-		return
-	}
-
-	event.Id = id
+	event.Id = eventId
 	deleteEvent(db, &event)
 
 	render.Text(http.StatusOK, "Event deleted")
@@ -77,6 +54,11 @@ func CreateEvent(request* http.Request, db* gorm.DB, render render.Render){
 
 	if findEventByName(db, event.EventName).Id != 0{
 		render.Text(http.StatusOK, "Event already exists")
+		return
+	}
+
+	if event.EventName == ""{
+		render.Text(http.StatusOK, "Event name cannot be empty")
 		return
 	}
 

@@ -1,8 +1,8 @@
 package model
 
 type Booking struct {
-	Id        uint `gorm:"primary_key"`
+	Id        uint64 `gorm:"primary_key"`
 	Event Event `gorm:"ForeignKey:EventId;AssociationForeignKey:Id"`
-	EventId uint
+	EventId uint64
 	BookedBy string
 }
