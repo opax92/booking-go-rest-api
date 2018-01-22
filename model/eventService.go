@@ -12,6 +12,12 @@ import (
 
 func GetAllEvents(db* gorm.DB, render render.Render){
 	var eventView = getAllEventsView(db)
+
+	if eventView == nil{
+		render.JSON(http.StatusOK, make([]Event, 0))
+		return
+	}
+
 	render.JSON(http.StatusOK, eventView)
 }
 

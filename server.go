@@ -16,8 +16,8 @@ func main() {
 
 	server.Group("/", func (r martini.Router) {
 		r.Get("events/", model.GetAllEvents)
-		r.Delete("event/:id", model.DeleteEvent)
-		r.Put("createEvent/", model.CreateEvent)
+		r.Delete("events/:id", model.DeleteEvent)
+		r.Put("events/", model.CreateEvent)
 		r.Put("bookEvent/", model.BookEvent)
 		r.Delete("unBookEvent/:id", model.UnBookEvent)
 	})

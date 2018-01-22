@@ -12,7 +12,6 @@ func findBookForEventId(db* gorm.DB, eventId uint64) Booking{
 }
 
 func bookEvent(db* gorm.DB, booking Booking){
-	db.Create(&booking)
 	db.Save(&booking)
 }
 

@@ -15,11 +15,11 @@ func deleteEvent(db* gorm.DB, event* Event){
 	db.Delete(event)
 }
 
-func findEventById(db* gorm.DB, id uint64) *Event{
+func findEventById(db* gorm.DB, id uint64) Event{
 	var event Event
 
 	db.First(&event, id)
-	return &event
+	return event
 }
 
 func findEventByName(db* gorm.DB, name string) Event{
